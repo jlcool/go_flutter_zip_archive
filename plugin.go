@@ -67,7 +67,8 @@ func handleZip(arguments interface{}) (reply interface{}, err error) {
 	if f.IsDir() {
 		files, _ := ioutil.ReadDir(src)
 		for _, file := range files {
-			w, err := zipw.Encrypt(file.Name(), password, zip.AES256Encryption)
+
+			w, err := zipw.Encrypt(file.Name(), password, zip.StandardEncryption)
 			b, err := os.OpenFile(path.Join(src, file.Name()), os.O_RDWR, 0666)
 			_, err = io.Copy(w, b)
 			if err != nil {
@@ -75,7 +76,7 @@ func handleZip(arguments interface{}) (reply interface{}, err error) {
 			}
 		}
 	} else {
-		w, err := zipw.Encrypt(f.Name(), password, zip.AES256Encryption)
+		w, err := zipw.Encrypt(f.Name(), password, zip.StandardEncryption)
 		b, err := os.OpenFile(src, os.O_RDWR, 0666)
 		_, err = io.Copy(w, b)
 		if err != nil {
